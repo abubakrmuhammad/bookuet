@@ -51,6 +51,13 @@ const { Site } = require('./models/site');
 const { Payment } = require('./models/payment');
 
 /*********************************
+ *            UTILS              *
+ **********************************/
+
+const { sendEmail } = require('./utils/mail');
+const { generatePO } = require('./utils/misc');
+
+/*********************************
  *            BOOKS              *
  **********************************/
 
@@ -191,7 +198,9 @@ app.post('/api/user/register', (req, res) => {
   user.save((err, doc) => {
     if (err) return res.json({ success: false, err });
 
-    res.status(200).json({ success: true });
+    sendEmail(doc.email, doc.firstname, null, 'welcome');
+
+    return res.status(200).json({ success: true });
   });
 });
 
@@ -227,7 +236,7 @@ app.post('/api/user/upload_image', auth, admin, formidable(), (req, res) => {
   cloudinary.uploader.upload(
     req.files.file.path,
     result => {
-      res.status(200).send({ public_id: result.public_id, url: result.url });
+      res.status(200).send({ public_id: result.public_id, url: result.secure_url });
     },
     { public_id: `${Date.now()}`, resource_type: 'auto' }
   );
@@ -312,8 +321,11 @@ app.post('/api/user/update_profile', auth, (req, res) => {
 });
 
 app.post('/api/user/buy', auth, (req, res) => {
+  const po = generatePO(req.user._id);
+
   const products = req.body.cartItems.map(item => {
     return {
+      porder: po,
       dateOfPurchase: Date.now(),
       title: item.title,
       id: item._id,
@@ -329,14 +341,16 @@ app.post('/api/user/buy', auth, (req, res) => {
     email: req.user.email
   };
 
+  const paymentData = { user, products, porder: po };
+
   User.findOneAndUpdate(
     { _id: req.user._id },
     { $push: { history: products }, $set: { cart: [] } },
     { new: true },
-    (err, doc) => {
+    (err, userDoc) => {
       if (err) return res.status(400).json({ success: false, err });
 
-      const payment = new Payment({ user, products });
+      const payment = new Payment(paymentData);
       payment.save((err, doc) => {
         if (err) return res.status(400).json({ success: false, err });
 
@@ -351,6 +365,9 @@ app.post('/api/user/buy', auth, (req, res) => {
           },
           err => {
             if (err) return res.status(400).json({ success: false, err });
+
+            sendEmail(userDoc.email, userDoc.firstname, null, 'purchase', payment);
+
             res.status(200).json({ success: true, cart: [] });
           }
         );

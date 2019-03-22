@@ -65,7 +65,8 @@ class Register extends Component {
           placeholder: 'Enter your password'
         },
         validation: {
-          required: true
+          required: true,
+          minLength: 8
         },
         valid: false,
         touched: false,
@@ -102,7 +103,6 @@ class Register extends Component {
     let dataToSubmit = generateData(this.state.formData, 'register');
     let isValid = isFormValid(this.state.formData, 'register');
 
-    console.log(isValid);
     if (!isValid) this.setState({ formError: true });
     else {
       this.props
@@ -115,7 +115,8 @@ class Register extends Component {
               this.props.history.push('/register_login');
             }, 3000);
           } else {
-            this.setState({ formError: true });
+            if (response.payload.err.name === 'ValidationError')
+              this.setState({ formError: true, errorMessage: 'Password must be atleast 8 characters long' });
           }
         })
         .catch(err => {

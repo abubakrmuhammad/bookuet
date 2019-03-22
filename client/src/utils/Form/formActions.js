@@ -14,6 +14,13 @@ export const validate = (fieldData, formData) => {
     valid = !isValid ? [isValid, message] : valid;
   }
 
+  if (fieldData.validation.minLength) {
+    const isValid = fieldData.value.length >= fieldData.validation.minLength;
+    const message = !isValid ? 'Password should be atleast 8 characters long' : '';
+
+    valid = !isValid ? [isValid, message] : valid;
+  }
+
   if (fieldData.validation.required) {
     const isValid = fieldData.value.trim() !== '';
     const message = !isValid ? 'This field is required' : '';

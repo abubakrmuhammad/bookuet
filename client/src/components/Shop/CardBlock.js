@@ -1,4 +1,6 @@
 import React from 'react';
+import FontAwesomeIcon from '@fortawesome/react-fontawesome';
+import { faFrown } from '@fortawesome/fontawesome-free-solid';
 import Card from '../../utils/Card';
 
 const CardBlock = props => {
@@ -9,10 +11,13 @@ const CardBlock = props => {
   return (
     <div className='card_block_shop'>
       <div>
-        <div>
+        <div className={props.grid ? '' : 'shop_grid'}>
           {props.books ? (
             props.books.length === 0 ? (
-              <div className='no_result'>Sorry, No Books Found</div>
+              <div className='no_result'>
+                <FontAwesomeIcon icon={faFrown} />
+                Sorry, No Books Found
+              </div>
             ) : null
           ) : null}
           {renderCards(props.books)}

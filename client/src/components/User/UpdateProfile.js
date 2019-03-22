@@ -83,7 +83,6 @@ class UpdateProfile extends Component {
     let dataToSubmit = generateData(this.state.formData, 'update_user');
     let isValid = isFormValid(this.state.formData, 'update_user');
 
-    console.log(isValid);
     if (!isValid) this.setState({ formError: true });
     else {
       this.props.dispatch(updateProfile(dataToSubmit)).then(() => {

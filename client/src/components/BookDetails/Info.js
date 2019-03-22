@@ -1,9 +1,22 @@
 import React from 'react';
 import FontAwesomeIcon from '@fortawesome/react-fontawesome';
 import { faTruck, faCheck, faTimes } from '@fortawesome/fontawesome-free-solid';
+import { Tooltip } from '@material-ui/core';
 import Button from '../../utils/Button';
 
 const Info = props => {
+  let addBtnClass = '';
+
+  if (!props.user.isAuth) addBtnClass = 'disabled';
+  else addBtnClass = '';
+
+  const tooltipMessageHandler = () => {
+    if (props.user) {
+      if (!props.user.isAuth) return 'Please Login First!';
+    }
+    return '';
+  };
+
   return (
     <div>
       <h1>{props.details.title}</h1>
@@ -42,28 +55,30 @@ const Info = props => {
           </div>
         )}
       </div>
-      <div className='product_actions'>
-        <div className='price'>$ {props.details.price}</div>
-        <div className='cart'>
-          <Button
-            type='add_to_cart_link'
-            clicked={() => {
-              props.addToCart(props.details._id);
-            }}
-            styling={{ marginTop: '10px' }}
-          />
-        </div>
-      </div>
       <div className='product_specifications'>
-        <h2>More Info:</h2>
+        <h2>More Info</h2>
         <div>
           <div className='item'>
-            <strong>Author: </strong> {props.details.author}
+            <strong>Author: &nbsp; </strong> {props.details.author}
           </div>
           <div className='item'>
-            <strong>Copies Sold: </strong> {props.details.sold}
+            <strong>Copies Sold: &nbsp; </strong> {props.details.sold}
           </div>
         </div>
+      </div>
+      <div className='product_actions'>
+        <div className='price'>$ {props.details.price}</div>
+        <Tooltip title={tooltipMessageHandler()} placement='bottom'>
+          <div className={`cart ${addBtnClass}`}>
+            <Button
+              type='add_to_cart_link'
+              clicked={() => {
+                props.addToCart(props.details._id);
+              }}
+              styling={{ marginTop: '10px' }}
+            />
+          </div>
+        </Tooltip>
       </div>
     </div>
   );

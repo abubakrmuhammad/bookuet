@@ -5,6 +5,17 @@ import Button from '../Button';
 import { addToCart } from '../../actions/user_actions';
 
 class Card extends Component {
+  state = {
+    addBtnClass: ''
+  };
+
+  componentDidMount() {
+    if (this.props.user.userData) {
+      if (!this.props.user.userData.isAuth) this.setState({ addBtnClass: 'disabled' });
+      else this.setState({ addBtnClass: '' });
+    }
+  }
+
   renderImage = images => {
     if (images.length > 0) return images[0].url;
     return '/images/image_not_available.png';
@@ -18,25 +29,31 @@ class Card extends Component {
     if (this.props.user.userData) {
       if (!this.props.user.userData.isAuth) return 'Please Login First!';
     }
-    return '';
+    return 'Add to Cart';
   };
 
   render() {
     return (
       <div className={`card_item_wrapper ${this.props.grid}`}>
-        <div
-          className='image'
-          style={{
-            background: `url(${this.renderImage(this.props.images)}) no-repeat`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        />
+        <div className='image'>
+          <img src={`${this.renderImage(this.props.images)}`} alt='Card Pic' />
+        </div>
         <div className='action_container'>
           <div className='tags'>
-            <div className='brand'>{this.props.author ? this.props.author : 'Author'}</div>
-            <div className='name'>{this.props.title}</div>
-            <div className='name'>${this.props.price}</div>
+            {this.props.grid ? (
+              <div>
+                <div className='name'>{this.props.title}</div>
+                <div className='by'>By</div>
+                <div className='brand'>{this.props.author ? this.props.author : 'Author'}</div>
+              </div>
+            ) : (
+              <div>
+                <div className='brand'>{this.props.author ? this.props.author : 'Author'}</div>
+                <div className='name'>{this.props.title}</div>
+              </div>
+            )}
+
+            <div className='price'>${this.props.price}</div>
           </div>
           {this.props.grid ? (
             <div className='description'>
@@ -54,7 +71,7 @@ class Card extends Component {
               </Button>
             </div>
             <Tooltip title={this.tooltipMessageHandler()} placement='top'>
-              <div className='button_wrapp'>
+              <div className={`button_wrapp ${this.state.addBtnClass}`}>
                 <Button
                   type='bag_link'
                   runAction={() => this.addToCartHandler(this.props._id)}

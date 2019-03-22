@@ -6,7 +6,11 @@ const Footer = props => {
   return (
     <footer className='bck_b_dark'>
       <div className='container'>
-        <div className='logo'>Bookuet</div>
+        <div className='logo'>
+          <span style={{ cursor: 'pointer' }} onClick={() => window.scrollTo(0, 0)}>
+            Bookuet
+          </span>
+        </div>
         <div className='wrapper'>
           <div className='left'>
             <h2>Contact Information</h2>

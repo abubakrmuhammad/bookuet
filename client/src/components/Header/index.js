@@ -66,7 +66,9 @@ class Header extends Component {
       <header className='bck_b_light'>
         <div className='container'>
           <div className='left'>
-            <div className='logo'>Bookuet</div>
+            <div className='logo'>
+              <Link to='/'>Bookuet</Link>
+            </div>
           </div>
           <div className='right'>
             <div className='top'>{this.renderLinks(this.state.user)}</div>

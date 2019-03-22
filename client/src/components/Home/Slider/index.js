@@ -6,17 +6,17 @@ const HomeSlider = () => {
   const slides = [
     {
       img: '/images/featured/featured_home_1.jpg',
-      title: 'Fender',
-      subTitle: 'Custom Shop',
+      title: 'Books',
+      subTitle: 'For Everyone',
       linkTitle: 'Shop now',
-      linkTo: '/shop'
+      linkTo: '/books'
     },
     {
       img: '/images/featured/featured_home_2.jpg',
-      title: 'B-Stock',
-      subTitle: 'Awesome discounts',
-      linkTitle: 'View Offers',
-      linkTo: '/shop'
+      title: 'Old is gold',
+      subTitle: 'Legacy Books Available',
+      linkTitle: 'View Books',
+      linkTo: '/books'
     }
   ];
 

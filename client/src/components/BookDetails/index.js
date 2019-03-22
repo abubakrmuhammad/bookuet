@@ -9,7 +9,6 @@ import Images from './Images';
 
 class BookDetails extends Component {
   componentDidMount() {
-    window.scrollTo(0, 0);
     const id = this.props.match.params.id;
 
     this.props.dispatch(getBookDetails(id));
@@ -40,7 +39,11 @@ class BookDetails extends Component {
                 </div>
               </div>
               <div className='right'>
-                <Info details={this.props.books.book} addToCart={id => this.addToCartHandler(id)} />
+                <Info
+                  details={this.props.books.book}
+                  user={this.props.user.userData}
+                  addToCart={id => this.addToCartHandler(id)}
+                />
               </div>
             </div>
           ) : (

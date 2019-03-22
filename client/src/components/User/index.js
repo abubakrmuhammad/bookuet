@@ -16,16 +16,18 @@ const UserDashboard = props => {
               <table>
                 <thead>
                   <tr>
+                    <th>Order ID</th>
                     <th>Book Title</th>
                     <th>Quantity</th>
                     <th>Price Paid</th>
-                    <th>Date of Purchase</th>
+                    <th>Time of Purchase</th>
                   </tr>
                   {history.map(item => (
                     <tr key={item.id}>
+                      <td>{item.porder}</td>
                       <td>{item.title}</td>
                       <td>{item.quantity}</td>
-                      <td>{(item.quantity * item.price).toFixed(2)}</td>
+                      <td>$ {(item.quantity * item.price).toFixed(2)}</td>
                       <td>
                         {moment(item.dateOfPurchase).format('LL')}&nbsp;-&nbsp;
                         {moment(item.dateOfPurchase).format('LT')}
