@@ -27,7 +27,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
-mongoose.connect(process.env.DATABASE);
+mongoose.connect(process.env.DATABASE ? process.env.DATABASE : 'mongodb://localhost:27017/bookuet');
 
 /*********************************
  *          MIDDLEWARES          *
