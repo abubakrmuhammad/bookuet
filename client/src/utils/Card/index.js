@@ -32,6 +32,13 @@ class Card extends Component {
     return 'Add to Cart';
   };
 
+  textLengthHandler = text => {
+    if (text.length > 24) {
+      text = `${text.substr(0, 21)}...`;
+    }
+    return text;
+  };
+
   render() {
     return (
       <div className={`card_item_wrapper ${this.props.grid}`}>
@@ -49,11 +56,12 @@ class Card extends Component {
             ) : (
               <div>
                 <div className='brand'>{this.props.author ? this.props.author : 'Author'}</div>
-                <div className='name'>{this.props.title}</div>
+                <div className='name'>{this.textLengthHandler(this.props.title)}</div>
               </div>
             )}
 
-            <div className='price'>${this.props.price}</div>
+            <div className='price'>$ {this.props.price}</div>
+            <div className='category'>{this.props.category.name}</div>
           </div>
           {this.props.grid ? (
             <div className='description'>

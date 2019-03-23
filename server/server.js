@@ -27,7 +27,7 @@ mongoose.set('useNewUrlParser', true);
 mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 
-mongoose.connect(process.env.DATABASE ? process.env.DATABASE : 'mongodb://localhost:27017/bookuet');
+mongoose.connect(process.env.MONGODB_URI);
 
 /*********************************
  *          MIDDLEWARES          *
@@ -36,6 +36,7 @@ mongoose.connect(process.env.DATABASE ? process.env.DATABASE : 'mongodb://localh
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser());
+app.use(express.static('client/build'));
 
 const { auth } = require('./middlewares/auth');
 const { admin } = require('./middlewares/admin');
@@ -65,7 +66,8 @@ app.post('/api/books/shop', (req, res) => {
   let { order, sortBy, limit, skip, filters } = req.body;
 
   if (!order) order = 'desc';
-  if (!sortBy) sortBy = '_id';
+  if (!sortBy) sortBy = 'createdAt';
+
   limit = parseInt(limit);
   skip = parseInt(skip);
 
@@ -156,11 +158,13 @@ app.post('/api/books/category', auth, admin, (req, res) => {
 });
 
 app.get('/api/books/categories', (req, res) => {
-  Category.find({}, (err, categories) => {
-    if (err) return res.status(400).send(err);
+  Category.find({})
+    .sort({ name: 'asc' })
+    .exec((err, categories) => {
+      if (err) return res.status(400).send(err);
 
-    res.status(200).send(categories);
-  });
+      res.status(200).send(categories);
+    });
 });
 
 app.post('/api/books/category/remove', auth, admin, (req, res) => {
@@ -393,6 +397,14 @@ app.post('/api/site/site_info', auth, admin, (req, res) => {
     res.status(200).send({ success: true, siteInfo: doc.siteInfo[0] });
   });
 });
+
+if (process.env.NODE_ENV === 'production') {
+  const path = require('path');
+
+  app.get('/*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client', '../build', 'index.html'));
+  });
+}
 
 const port = process.env.PORT || 3002;
 

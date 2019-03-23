@@ -29,7 +29,7 @@ class BookDetails extends Component {
   render() {
     return (
       <div>
-        <PageTop>Book Details</PageTop>
+        <PageTop backLink='/books'>Book Details</PageTop>
         <div className='container'>
           {this.props.books.book ? (
             <div className='product_detail_wrapper'>

@@ -37,7 +37,7 @@ const HomeSlider = () => {
             <div className='tag title'>{item.title}</div>
             <div className='tag low_title'>{item.subTitle}</div>
             <div>
-              <Button type='default' linkTo={item.linkTo} styling={{ margin: '10px 0 0 0' }}>
+              <Button type='default' linkTo={item.linkTo} styling={{ margin: '16px 0 0 0' }}>
                 {item.linkTitle}
               </Button>
             </div>

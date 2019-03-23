@@ -5,6 +5,7 @@ import { faBars, faTh } from '@fortawesome/fontawesome-free-solid';
 import PageTop from '../../utils/PageTop';
 import CollapseCheckbox from '../../utils/CollapseCheckbox';
 import CollapseRadio from '../../utils/CollapseRadio';
+import SortBy from '../../utils/SortBy';
 import LoadMoreCards from './LoadMoreCards';
 import { getBooksToShop, getCategories } from '../../actions/books_actions';
 import { price } from '../../utils/filters';
@@ -17,12 +18,36 @@ class Shop extends Component {
     filters: {
       category: [],
       price: []
+    },
+    sortBy: {
+      value: 'createdAt',
+      order: 'asc',
+      items: [
+        {
+          name: 'Newest',
+          value: 'createdAt',
+          order: 'asc'
+        },
+        {
+          name: 'Most Sold',
+          value: 'sold',
+          order: 'desc'
+        }
+      ]
     }
   };
 
   componentDidMount() {
     this.props.dispatch(getCategories());
-    this.props.dispatch(getBooksToShop(this.state.skip, this.state.limit, this.state.filters));
+    this.props.dispatch(
+      getBooksToShop(
+        this.state.skip,
+        this.state.limit,
+        this.state.filters,
+        this.state.sortBy.value,
+        this.state.sortBy.order
+      )
+    );
   }
 
   priceHandler = value => {
@@ -57,22 +82,45 @@ class Shop extends Component {
   loadMoreHandler = () => {
     const skip = this.state.skip + this.state.limit;
 
-    this.props.dispatch(getBooksToShop(skip, this.state.limit, this.state.filters, this.props.books.books)).then(() => {
-      this.setState({ skip });
-    });
+    this.props
+      .dispatch(getBooksToShop(skip, this.state.limit, this.state.filters, '', '', this.props.books.books))
+      .then(() => {
+        this.setState({ skip });
+      });
   };
 
   gridHandler = () => {
     this.setState({ grid: !this.state.grid ? 'grid_bars' : '' });
   };
 
+  sortByHandler = value => {
+    const sortBy = { ...this.state.sortBy };
+    if (value === 'createdAt') sortBy.order = 'asc';
+    else if (value === 'sold') sortBy.order = 'desc';
+
+    sortBy.value = value;
+
+    this.setState({ sortBy }, () => {
+      this.props.dispatch(
+        getBooksToShop(
+          this.state.skip,
+          this.state.limit,
+          this.state.filters,
+          this.state.sortBy.value,
+          this.state.sortBy.order
+        )
+      );
+    });
+  };
+
   render() {
     return (
       <div>
-        <PageTop>Browse Books</PageTop>
+        <PageTop backLink='/'>Browse Books</PageTop>
         <div className='container'>
           <div className='shop_wrapper'>
             <div className='left'>
+              <SortBy items={this.state.sortBy.items} value={this.state.sortBy.value} changed={this.sortByHandler} />
               <CollapseCheckbox
                 opened={false}
                 title='Category'

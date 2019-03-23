@@ -40,8 +40,8 @@ export function getCategories() {
   };
 }
 
-export function getBooksToShop(skip, limit, filters = {}, previousBooks = []) {
-  const data = { skip, limit, filters };
+export function getBooksToShop(skip, limit, filters = {}, sortBy, order, previousBooks = []) {
+  const data = { skip, limit, filters, sortBy };
   const request = axios.post(`${BOOKS_SERVER}/shop`, data).then(response => {
     const { size, books } = response.data;
     const totalBooks = [...previousBooks, ...books];

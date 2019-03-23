@@ -10,9 +10,8 @@ const RegisterLogin = () => {
           <div className='left'>
             <h1>New Customers</h1>
             <p>
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quaerat, voluptatem corrupti? Maiores ipsa dicta
-              harum vel eaque soluta, totam eius quos nulla consequatur eligendi eveniet nam, error vero. Pariatur,
-              asperiores.
+              We bring you the best possible expericience that you can ever get. Sign Up Now and Enjoy Unlimited
+              Shopping forever. Click the button below to Create your account now.
             </p>
             <Button
               type='default'

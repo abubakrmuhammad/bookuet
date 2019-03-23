@@ -7,6 +7,13 @@ const Items = props => {
     return '/images/image_not_available.png';
   };
 
+  const textLengthHandler = text => {
+    if (text.length > 10) {
+      text = `${text.substr(0, 10)}...`;
+    }
+    return text;
+  };
+
   const renderItems = () => {
     if (props.cart)
       return props.cart.map(item => (
@@ -17,7 +24,7 @@ const Items = props => {
           <div className='item'>
             <h4>Book Title</h4>
             <div className='cart_item_title_link'>
-              <Link to={`/books/${item._id}`}>{item.title}</Link>
+              <Link to={`/books/${item._id}`}>{textLengthHandler(item.title)}</Link>
             </div>
           </div>
           <div className='item'>
