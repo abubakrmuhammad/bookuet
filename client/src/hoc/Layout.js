@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import NotOptimized from '../utils/NotOptimized';
 import { getSiteInfo } from '../actions/site_actions';
 
 class Layout extends Component {
@@ -12,6 +13,7 @@ class Layout extends Component {
   render() {
     return (
       <div>
+        <NotOptimized />
         <Header />
         <div className='page_container'>{this.props.children}</div>
         <Footer siteInfo={this.props.site.siteInfo} />

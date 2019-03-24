@@ -1049,3 +1049,35 @@ footer .business_nfo .nfo {
   text-transform: uppercase;
   font-size: 14px;
 }
+
+.not_optimized {
+  display: none;
+  height: 100vh;
+  width: 100vw;
+  background-color: #fff;
+  text-align: center;
+  padding-top: 128px;
+  font-size: 28px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+}
+
+.not_optimized svg {
+  font-size: 72px;
+  margin-bottom: 32px;
+}
+
+.not_optimized button {
+  margin-top: 32px;
+}
+
+@media only screen and (max-width: 767px) {
+  .not_optimized {
+    display: block;
+  }
+  .not_optimized.false {
+    display: none;
+  }
+}
